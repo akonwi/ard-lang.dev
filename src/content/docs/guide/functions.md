@@ -29,6 +29,20 @@ fn print_message(msg: Str) {
 }
 ```
 
+### Mutating parameters
+
+In order for a function to apply side-effects or mutations to parameters, the parameter must be marked as mutable in the signature.
+
+```ard
+fn add_ten(mut value: Int) {
+  value += 10
+}
+
+mut count = 0
+add_ten(count)
+io::print(count) // 10
+```
+
 ## Return Values
 
 There is no `return` keyword in Ard. The last expression in a function is automatically returned:
