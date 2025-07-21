@@ -3,6 +3,8 @@ title: Installation
 description: How to install and set up Ard on various platforms.
 ---
 
+## TODO
+<!--
 ## Prerequisites
 
 Ard requires Go 1.19 or later to build and run. Ensure Go is installed on the system:
@@ -50,4 +52,4 @@ ard --version
 
 ## Next Steps
 
-With Ard installed, proceed to [create your first program](/getting-started/first-program/).
+With Ard installed, proceed to [create your first program](/getting-started/first-program/). -->
