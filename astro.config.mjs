@@ -42,9 +42,9 @@ export default defineConfig({
         {
           label: "Advanced Topics",
           items: [
-            { label: "Async Programming", slug: "advanced/async" },
             { label: "Traits", slug: "advanced/traits" },
             { label: "Generics", slug: "advanced/generics" },
+            { label: "Async Programming", slug: "advanced/async" },
           ],
         },
         {
