@@ -1,36 +1,70 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Ard Language
+description: A modern, statically-typed programming language designed for clarity, safety, and ease.
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: A Really Dope Language
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Get Started
+      link: /getting-started/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: View on GitHub
+      link: https://github.com/akonwi/ard
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
+## What is Ard?
+
+Ard is a modern, statically-typed programming language that combines the best features from JavaScript, Swift, and Go while introducing its own unique characteristics. It is designed with three core principles in mind:
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Readable" icon="open-book">
+		Ard code should be easy to read and understand with clear, expressive syntax designed for readability.
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Simple" icon="rocket">
+		There should be one obvious way to do things. Ard follows Go's philosophy for left-to-right readability.
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Safe" icon="approve-check">
+		The compiler catches errors at compile time, and there are no exceptions - errors are values.
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="Reliable" icon="setting">
+		Runtime is built in Go, making it fast and efficient with future plans to compile to Go for portability.
 	</Card>
 </CardGrid>
+
+## Key Features
+
+- **Static typing** with type inference
+- **Pattern matching** with powerful match expressions
+- **Error handling** with Result types (no exceptions)
+- **Async programming** with fibers (green threads)
+- **Traits system** for shared behavior
+- **Module system** with absolute imports
+- **Memory safety** without garbage collection overhead
+
+## Quick Example
+
+```ard
+use ard/io
+
+fn fibonacci(n: Int) Int {
+  match n {
+    0 => 0
+    1 => 1
+    _ => fibonacci(n - 1) + fibonacci(n - 2)
+  }
+}
+
+fn main() {
+  for i in 1..10 {
+    io::print("fib({i.to_str()}) = {fibonacci(i).to_str()}")
+  }
+}
+```
+
+Read the [introduction guide](/getting-started/introduction/) to learn more.
