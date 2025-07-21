@@ -15,15 +15,16 @@ fn greet(name: Str) Str {
 
 ## Parameters and Return Types
 
-Function parameters require type annotations. Return types are specified after the parameter list:
+Function parameters require type annotations. Return types are specified after the parameter list.
+Without an explicit return type, Ard will treat the function as non-returning.
 
 ```ard
 fn add(a: Int, b: Int) Int {
   a + b
 }
 
+// No return type specified - this function will not return a value
 fn print_message(msg: Str) {
-  // No return type specified - function doesn't return a value
   io::print(msg)
 }
 ```
@@ -34,7 +35,7 @@ There is no `return` keyword in Ard. The last expression in a function is automa
 
 ```ard
 fn multiply(x: Int, y: Int) Int {
-  x * y  // This value is returned
+  x * y
 }
 
 fn get_status(code: Int) Str {
@@ -43,13 +44,13 @@ fn get_status(code: Int) Str {
     404 => "Not Found"
     500 => "Server Error"
     _ => "Unknown"
-  }  // Match expression result is returned
+  }
 }
 ```
 
-## Named Arguments
+## Labelled Arguments
 
-Functions can be called with named arguments, allowing parameters to be specified in any order:
+Functions can be called with labelled arguments, allowing parameters to be specified in any order:
 
 ```ard
 fn create_user(name: Str, age: Int, email: Str) User {
@@ -98,74 +99,14 @@ Functions can be defined inline without names:
 
 ```ard
 let squared = map([1, 2, 3], fn(x: Int) Int { x * x })
-
-// Multi-line anonymous functions
-let processed = map(numbers, fn(n: Int) Int {
-  let temp = n * 3
-  temp + 1
-})
 ```
 
 ## Function Signatures
 
-When declaring function types, use the `fn` syntax:
+When referring to function types, use the `fn` syntax and just omit the body:
 
 ```ard
 let operation: fn(Int, Int) Int = add
 let printer: fn(Str) = io::print
 let generator: fn() Int = get_random_number
-```
-
-## Closures
-
-Anonymous functions can capture variables from their surrounding scope:
-
-```ard
-fn make_counter(start: Int) fn() Int {
-  mut count = start
-  fn() Int {
-    count =+ 1
-    count
-  }
-}
-
-let counter = make_counter(10)
-let first = counter()   // 11
-let second = counter()  // 12
-```
-
-## Higher-Order Function Examples
-
-```ard
-// Filter function
-fn filter(list: [Int], predicate: fn(Int) Bool) [Int] {
-  let result: [Int] = []
-  for item in list {
-    match predicate(item) {
-      true => result.push(item)
-      false => {}
-    }
-  }
-  result
-}
-
-// Usage
-let numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-let evens = filter(numbers, fn(n: Int) Bool { n % 2 == 0 })
-```
-
-## Function Composition
-
-```ard
-fn compose(f: fn(Int) Int, g: fn(Int) Int) fn(Int) Int {
-  fn(x: Int) Int {
-    f(g(x))
-  }
-}
-
-let add_one = fn(x: Int) Int { x + 1 }
-let times_two = fn(x: Int) Int { x * 2 }
-let add_then_double = compose(times_two, add_one)
-
-let result = add_then_double(5)  // (5 + 1) * 2 = 12
 ```
