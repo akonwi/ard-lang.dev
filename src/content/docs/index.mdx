@@ -1,13 +1,13 @@
 ---
 title: Ard Language
-description: A modern, statically-typed programming language designed for clarity, safety, and ease.
+description: Ard is a modern, programming language designed for legibility, simplicity, and type-safety.
 template: splash
 hero:
   tagline: A Really Dope Language
   image:
     file: ../../assets/houston.webp
   actions:
-    - text: Get Started
+    - text: Learn More
       link: /getting-started/introduction/
       icon: right-arrow
     - text: View on GitHub
@@ -20,50 +20,44 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## What is Ard?
 
-Ard is a modern, statically-typed programming language that combines the best features from JavaScript, Swift, and Go while introducing its own unique characteristics. It is designed with three core principles in mind:
+Ard is a modern, programming language designed for legibility, simplicity, and type-safety.
+It combines elements from JavaScript, Swift, Go, and Rust.
 
-<CardGrid stagger>
-	<Card title="Readable" icon="open-book">
+<CardGrid>
+	<Card title="Readable" icon="pencil">
 		Ard code should be easy to read and understand with clear, expressive syntax designed for readability.
 	</Card>
-	<Card title="Simple" icon="rocket">
+	<Card title="Simple" icon="approve-check">
 		There should be one obvious way to do things. Ard follows Go's philosophy for left-to-right readability.
 	</Card>
-	<Card title="Safe" icon="approve-check">
-		The compiler catches errors at compile time, and there are no exceptions - errors are values.
+	<Card title="Safe" icon="warning">
+		The compiler catches type errors and there are no unexpected runtime failures.
 	</Card>
-	<Card title="Reliable" icon="setting">
-		Runtime is built in Go, making it fast and efficient with future plans to compile to Go for portability.
+	<Card title="Reliable" icon="star">
+		Built on Go's runtime, making it fast and efficient.
 	</Card>
 </CardGrid>
-
-## Key Features
-
-- **Static typing** with type inference
-- **Pattern matching** with powerful match expressions
-- **Error handling** with Result types (no exceptions)
-- **Async programming** with fibers (green threads)
-- **Traits system** for shared behavior
-- **Module system** with absolute imports
-- **Memory safety** without garbage collection overhead
 
 ## Quick Example
 
 ```ard
 use ard/io
 
-fn fibonacci(n: Int) Int {
-  match n {
-    0 => 0
-    1 => 1
-    _ => fibonacci(n - 1) + fibonacci(n - 2)
-  }
-}
-
 fn main() {
-  for i in 1..10 {
-    io::print("fib({i.to_str()}) = {fibonacci(i).to_str()}")
+  mut numbers: [Int] = []
+  io::print("numbers.size = {numbers.size()}")
+
+  io::print("adding numbers from 0 to 10")
+  for i in 0..10 {
+    numbers.push(i)
   }
+
+  io::print("numbers.size = {numbers.size()}")
+  for n in numbers {
+    io::print(n)
+  }
+
+  io::print("7th element = {numbers.at(6)}")
 }
 ```
 
