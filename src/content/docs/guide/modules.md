@@ -5,15 +5,19 @@ description: Learn about Ard's module system, imports, and code organization.
 
 ## Module Basics
 
-Each Ard file is a module that can be either a complete program or used by other modules. Imports are declared at the top of files using the `use` keyword.
+Each Ard file is a module that can be either a runnable program or used by other modules. Imports are declared at the top of files using the `use` keyword.
 
 ```ard
 use ard/io
 use my_project/utils as helpers
 
-io::print("Hello from main module")
-helpers::calculate(42)
+fn main() {
+  io::print("Hello from main module")
+  helpers::calculate(42)
+}
 ```
+
+A module with a `main` function is a program and can be run with `ard run [path]`.
 
 ## Import Syntax
 
@@ -24,7 +28,7 @@ use path/to/module
 use path/to/module as alias
 ```
 
-By default, the imported module is available by the last segment of the path. Use `as` to provide a custom name.
+By default, the imported module is available with the last segment of the path as the name. Use `as` to provide a custom name.
 
 ## Standard Library
 
@@ -36,7 +40,6 @@ use ard/json        // JSON parsing and serialization
 use ard/http        // HTTP client functionality
 use ard/async       // Asynchronous programming
 use ard/maybe       // Maybe type utilities
-use ard/result      // Result type utilities
 ```
 
 ## Project Structure
@@ -108,20 +111,6 @@ fn divide(a: Int, b: Int) Int!Str {
 }
 ```
 
-## Module Aliases
-
-Use aliases to avoid naming conflicts or shorten long paths:
-
-```ard
-use my_calculator/math/operations as math
-use my_calculator/string/operations as strings
-
-fn main() {
-  let sum = math::add(5, 3)
-  let text = strings::concat("Hello", "World")
-}
-```
-
 ## Public and Private Declarations
 
 ### Public by Default
@@ -156,7 +145,7 @@ private let secret_key = "abc123"  // Private
 
 ## Struct Field Visibility
 
-All struct fields are public by default:
+Struct fields are always public if the struct is public.
 
 ```ard
 // In user.ard
@@ -171,120 +160,9 @@ impl User {
   fn get_display_name() Str {  // Public
     format_name(@username)     // Calls private method
   }
-  
+
   private fn format_name(name: Str) Str {  // Private
     "User: {name}"
   }
 }
-```
-
-## Circular Dependencies
-
-Ard prevents circular dependencies between modules. The module system enforces a directed acyclic graph (DAG) structure:
-
-```ard
-// This would cause a circular dependency error:
-// a.ard imports b.ard
-// b.ard imports a.ard
-```
-
-To resolve circular dependencies, extract shared functionality into a separate module:
-
-```ard
-// Instead of a.ard ↔ b.ard, use:
-// a.ard → shared.ard ← b.ard
-```
-
-## Module Organization Best Practices
-
-### 1. Logical Grouping
-
-Organize related functionality into modules:
-
-```
-my_web_app/
-├── ard.toml
-├── main.ard
-├── models/
-│   ├── user.ard
-│   ├── post.ard
-│   └── comment.ard
-├── handlers/
-│   ├── auth.ard
-│   ├── api.ard
-│   └── web.ard
-└── utils/
-    ├── validation.ard
-    ├── crypto.ard
-    └── database.ard
-```
-
-### 2. Clear Naming
-
-Use descriptive module and function names:
-
-```ard
-use my_web_app/utils/validation as validate
-use my_web_app/models/user as user_model
-use my_web_app/handlers/auth as auth_handler
-```
-
-### 3. Minimal Interfaces
-
-Keep module interfaces focused and minimal:
-
-```ard
-// Good: focused interface
-use my_app/crypto
-
-let hash = crypto::hash_password("secret")
-let valid = crypto::verify_password("secret", hash)
-
-// Less ideal: kitchen-sink module
-use my_app/utils
-
-let hash = utils::hash_password("secret")
-let config = utils::load_config()
-let log = utils::create_logger()
-let db = utils::connect_database()
-```
-
-### 4. Standard Library Conventions
-
-Follow standard library naming patterns:
-
-```ard
-use ard/io     // Short, descriptive names
-use ard/json   // Clear purpose
-use ard/http   // Standard abbreviations
-```
-
-## Re-exports
-
-While not directly supported, you can create convenience modules that group related functionality:
-
-```ard
-// In my_app/prelude.ard - common imports
-use ard/io
-use ard/json
-use my_app/models/user
-use my_app/utils/validation
-
-// Re-export common functions
-fn print(msg: Str) {
-  io::print(msg)
-}
-
-fn parse_json(text: Str) Json!Str {
-  json::parse(text)
-}
-```
-
-Then import the prelude:
-
-```ard
-use my_app/prelude
-
-prelude::print("Hello")
-let data = prelude::parse_json("{\"name\": \"Alice\"}")
 ```
