@@ -28,10 +28,10 @@ export default defineConfig({
         {
           label: "Language Guide",
           items: [
+            { label: "Types", slug: "guide/types" },
             { label: "Variables", slug: "guide/variables" },
             { label: "Functions", slug: "guide/functions" },
             { label: "Control Flow", slug: "guide/control-flow" },
-            { label: "Types", slug: "guide/types" },
             { label: "Structs", slug: "guide/structs" },
             { label: "Enums", slug: "guide/enums" },
             { label: "Pattern Matching", slug: "guide/pattern-matching" },

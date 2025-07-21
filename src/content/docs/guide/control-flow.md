@@ -123,6 +123,27 @@ let message = match user_status {
 }
 ```
 
+### Matching on Type Unions
+
+Use match expressions to handle different types in a union:
+
+```ard
+type Content = Str | Int | Bool
+
+fn describe(value: Content) Str {
+  match value {
+    Str => "Text: {it}"
+    Int => "Number: {it.to_str()}"
+    Bool => "Flag: {it.to_str()}"
+  }
+}
+
+let items: [Content] = ["hello", 42, true]
+for item in items {
+  io::print(describe(item))
+}
+```
+
 ## Pattern Matching Order
 
 Patterns are evaluated in the order they appear. More specific patterns should come before general ones:
