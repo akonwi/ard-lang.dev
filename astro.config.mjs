@@ -9,6 +9,9 @@ export default defineConfig({
       title: "Ard Language",
       description:
         "A modern, statically-typed programming language designed for clarity, safety, and ease.",
+      logo: {
+        src: "./src/assets/logo.png",
+      },
       social: [
         {
           icon: "github",
