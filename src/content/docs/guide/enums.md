@@ -5,7 +5,7 @@ description: Learn about defining and using enums for representing discrete sets
 
 ## Defining Enums
 
-Enums enumerate a discrete set of named values. In Ard, enums are labeled integers and cannot have associated values:
+Enums are used to represent labels for a discrete set of options. In Ard, enums are simply labeled integers and cannot have associated data:
 
 ```ard
 enum Status {
@@ -22,34 +22,18 @@ enum HttpStatus {
 }
 ```
 
-## Accessing Enum Values
+## Referencing Enum Values
 
-Use the static operator `::` to access enum variants:
+Use the static operator `::` to reference enum variants:
 
 ```ard
 let current_status = Status::active
 let response_code = HttpStatus::ok
 ```
 
-The static operator avoids naming conflicts between enum variants and other identifiers in scope.
+## Matching On Enums
 
-## Using Enums in Functions
-
-```ard
-fn get_status_message(status: Status) Str {
-  match status {
-    Status::active => "System is active"
-    Status::inactive => "System is inactive"
-    Status::pending => "System status pending"
-  }
-}
-
-let message = get_status_message(Status::active)
-```
-
-## Pattern Matching with Enums
-
-Enums work seamlessly with match expressions:
+Use `match` expressions to do conditional logic based on the enum value:
 
 ```ard
 enum Priority {
@@ -69,19 +53,6 @@ fn handle_task(priority: Priority) {
 }
 ```
 
-## Enum Comparison
-
-Enums can be compared for equality:
-
-```ard
-let status1 = Status::active
-let status2 = Status::active
-let status3 = Status::pending
-
-let same = status1 == status2      // true
-let different = status1 == status3 // false
-```
-
 ## Practical Examples
 
 ### State Machines
@@ -91,97 +62,32 @@ enum ConnectionState {
   disconnected,
   connecting,
   connected,
-  error
+  error,
 }
 
-fn handle_connection(state: ConnectionState) ConnectionState {
-  match state {
+mut state = ConnectionState::disconnected
+
+fn connect() ConnectionState {
+  state = match state {
     ConnectionState::disconnected => {
       io::print("Attempting to connect...")
       ConnectionState::connecting
-    }
+    },
     ConnectionState::connecting => {
       // Simulate connection logic
       match connection_successful() {
         true => ConnectionState::connected
         false => ConnectionState::error
       }
-    }
+    },
     ConnectionState::connected => {
       io::print("Already connected")
       ConnectionState::connected
-    }
+    },
     ConnectionState::error => {
       io::print("Connection failed, retrying...")
       ConnectionState::disconnected
-    }
-  }
-}
-```
-
-### HTTP Response Handling
-
-```ard
-enum HttpMethod {
-  get,
-  post,
-  put,
-  delete,
-  patch
-}
-
-fn format_request(method: HttpMethod, path: Str) Str {
-  let method_name = match method {
-    HttpMethod::get => "GET"
-    HttpMethod::post => "POST"
-    HttpMethod::put => "PUT"
-    HttpMethod::delete => "DELETE"
-    HttpMethod::patch => "PATCH"
-  }
-  
-  "{method_name} {path} HTTP/1.1"
-}
-```
-
-### Configuration Options
-
-```ard
-enum LogLevel {
-  debug,
-  info,
-  warn,
-  error
-}
-
-enum Environment {
-  development,
-  staging,
-  production
-}
-
-struct Config {
-  log_level: LogLevel
-  environment: Environment
-  debug_mode: Bool
-}
-
-fn create_config(env: Environment) Config {
-  let log_level = match env {
-    Environment::development => LogLevel::debug
-    Environment::staging => LogLevel::info
-    Environment::production => LogLevel::warn
-  }
-  
-  let debug_mode = match env {
-    Environment::development => true
-    Environment::staging => false
-    Environment::production => false
-  }
-  
-  Config {
-    log_level: log_level,
-    environment: env,
-    debug_mode: debug_mode
+    },
   }
 }
 ```
@@ -193,19 +99,10 @@ Unlike some languages, Ard enums:
 - Are essentially named integers
 - Cannot have methods defined on them directly
 
-For more complex data structures with variants, consider using type unions:
+For actual discriminated unions of various types (A.K.A. sum types) like in Rust, consider using <a href="/guide/types/#type-unions">type unions</a>:
 
 ```ard
-// Instead of enum with data, use type unions
-type Result = Success | Error
 type Success = { value: Str }
 type Error = { message: Str }
+type Outcome = Success | Error // supporting the possible shapes cannot be done with a plain enum
 ```
-
-## Best Practices
-
-1. **Use descriptive names** for both the enum and its variants
-2. **Group related states** together in a single enum
-3. **Always handle all cases** in match expressions
-4. **Use enums for finite sets** of known values
-5. **Prefer type unions** when variants need associated data
