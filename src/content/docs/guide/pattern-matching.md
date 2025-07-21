@@ -5,17 +5,21 @@ description: Learn about Ard's powerful pattern matching with match expressions.
 
 ## Match Expressions
 
-Match expressions provide powerful pattern matching capabilities in Ard. They are similar to switch statements but more expressive:
+Match expressions provide powerful pattern matching capabilities in Ard. They are similar to switch statements but are more expressive:
 
 ```ard
-let result = match value {
-  pattern1 => expression1
-  pattern2 => expression2
-  _ => default_expression
+let is_ready = false
+match false {
+  true => {...},
+  false => {...}
 }
 ```
 
-The `_` wildcard matches any value and serves as a catch-all pattern.
+## Exhaustiveness
+
+Match expressions must be exhaustive and handle all possibilities.
+
+The `_` wildcard matches serves as a catch-all after specific cases.
 
 ## Integer Patterns
 
@@ -23,10 +27,10 @@ The `_` wildcard matches any value and serves as a catch-all pattern.
 
 ```ard
 let message = match status_code {
-  200 => "OK"
-  404 => "Not Found"
-  500 => "Server Error"
-  _ => "Unknown Status"
+  200 => "OK",
+  404 => "Not Found",
+  500 => "Server Error",
+  _ => "Unknown Status",
 }
 ```
 
@@ -81,6 +85,8 @@ match number {
 
 ## Boolean Patterns
 
+Boolean matches are like Ard's version of ternary expressions in other languages.
+
 ```ard
 let access_level = match is_admin {
   true => "full access"
@@ -88,25 +94,13 @@ let access_level = match is_admin {
 }
 
 // More complex boolean logic
-let message = match logged_in && verified {
+let message = match logged_in and verified {
   true => "Welcome to your account"
   false => "Please log in and verify your account"
 }
 ```
 
-## String Patterns
-
-```ard
-let response = match command {
-  "start" => "Starting the process..."
-  "stop" => "Stopping the process..."
-  "restart" => "Restarting the process..."
-  "status" => get_status()
-  _ => "Unknown command"
-}
-```
-
-## Enum Patterns
+## Matching Enums
 
 ```ard
 enum Priority { low, medium, high, critical }
@@ -119,7 +113,7 @@ let urgency = match task_priority {
 }
 ```
 
-## Type Union Patterns
+## Matching on Type Unions
 
 When matching on type unions, the matched value is bound to the variable `it`:
 
@@ -129,8 +123,8 @@ type Content = Str | Int | Bool
 fn describe(value: Content) Str {
   match value {
     Str => "Text: '{it}'"
-    Int => "Number: {it.to_str()}"
-    Bool => "Boolean: {it.to_str()}"
+    Int => "Number: {it}"
+    Bool => "Boolean: {it}"
   }
 }
 
@@ -145,7 +139,7 @@ for item in items {
 // Boolean: true
 ```
 
-## Maybe Type Patterns
+## Matching on Maybes
 
 ```ard
 use ard/maybe
@@ -158,7 +152,7 @@ let greeting = match maybe_name {
 }
 ```
 
-## Result Type Patterns
+## Matching on Results
 
 ```ard
 fn divide(a: Int, b: Int) Result<Int, Str> {
@@ -170,7 +164,7 @@ fn divide(a: Int, b: Int) Result<Int, Str> {
 
 let result = divide(10, 2)
 let message = match result {
-  ok(value) => "Result: {value.to_str()}"
+  ok(value) => "Result: {value}"
   err(error) => "Error: {error}"
 }
 ```
@@ -205,61 +199,5 @@ fn handle_event(current_state: State, event: Event) State {
       _ => State::error
     }
   }
-}
-```
-
-### HTTP Status Code Handling
-
-```ard
-fn handle_http_response(status: Int, body: Str) Str {
-  match status {
-    200..299 => "Success: {body}"
-    300..399 => "Redirect: {body}"
-    400 => "Bad Request"
-    401 => "Unauthorized"
-    403 => "Forbidden"
-    404 => "Not Found"
-    400..499 => "Client Error: {status.to_str()}"
-    500..599 => "Server Error: {status.to_str()}"
-    _ => "Unknown Status: {status.to_str()}"
-  }
-}
-```
-
-## Match Expression as Statement
-
-Match expressions can be used as statements without returning a value:
-
-```ard
-match log_level {
-  LogLevel::debug => io::print("DEBUG: {message}")
-  LogLevel::info => io::print("INFO: {message}")
-  LogLevel::warn => io::print("WARN: {message}")
-  LogLevel::error => {
-    io::print("ERROR: {message}")
-    log_to_file(message)
-  }
-}
-```
-
-## Best Practices
-
-1. **Handle all cases**: Always include a wildcard `_` pattern unless all possible values are explicitly handled
-2. **Order patterns carefully**: Put specific patterns before general ones
-3. **Use meaningful variable names**: When binding values, use descriptive names
-4. **Keep patterns simple**: Complex patterns can be hard to read and maintain
-5. **Consider helper functions**: For complex match arms, extract logic into separate functions
-
-```ard
-// Good: extract complex logic
-fn handle_error_case(error: Str) {
-  log_error(error)
-  send_notification(error)
-  update_metrics()
-}
-
-match result {
-  ok(value) => process_success(value)
-  err(error) => handle_error_case(error)
 }
 ```
