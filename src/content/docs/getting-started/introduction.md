@@ -12,7 +12,7 @@ description: Learn about Ard's philosophy, design goals, and key features.
 
 ## Language Description
 
-Ard is a modern, programming language designed for legibility, simplicity, and type-safety.
+Ard is a general-purpose programming language designed for legibility, simplicity, and type-safety.
 It combines elements from JavaScript, Swift, Go, and Rust.
 
 ## Design Goals
