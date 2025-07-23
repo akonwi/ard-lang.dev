@@ -9,12 +9,11 @@ export default defineConfig({
       title: "Ard Language",
       description:
         "A modern, statically-typed programming language designed for clarity, safety, and ease.",
+      favicon: "/favicon.svg",
       logo: {
         src: "./src/assets/logo.png",
       },
-      customCss: [
-        "./src/styles/custom.css",
-      ],
+      customCss: ["./src/styles/custom.css"],
       social: [
         {
           icon: "github",
